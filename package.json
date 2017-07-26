@@ -17,12 +17,22 @@
   },
   "homepage": "https://github.com/JasonLinn/imooc-nodeJs#readme",
   "dependencies": {
+    "bcrypt": "^1.0.2",
     "body-parser": "^1.17.2",
     "express": "^4.15.3",
     "express-static": "^1.2.4",
+    "grunt-concurrent": "^2.3.1",
+    "grunt-contrib-jshint": "^1.1.0",
+    "grunt-contrib-less": "^1.4.1",
+    "grunt-contrib-uglify": "^3.0.1",
+    "grunt-mocha-test": "^0.13.2",
+    "grunt-nodemon": "^0.4.2",
     "moment": "^2.18.1",
     "mongoose": "^4.11.4",
     "pug": "^2.0.0-rc.2",
     "underscore": "^1.8.3"
+  },
+  "devDependencies": {
+    "grunt-contrib-watch": "^1.0.0"
   }
 }

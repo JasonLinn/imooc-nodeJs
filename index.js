@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const path = require('path');
 const moment = require('moment');
 const mongoose = require('mongoose');
+const User = require('./models/user');
 const _ = require('underscore');
 const Movie = require('./models/movie.js');
 
@@ -46,6 +47,57 @@ app.get('/', (req, res) => {
     });
   })
 });
+
+//signup
+app.post('/user/signup',function(req,res){
+  //post 用 body
+  var _user = req.body.user;
+  // var user = new User(_user);
+  User.findOne({name:_user.name},function(err,user){
+    if(err){
+      console.log(err);
+    }
+    if(user){
+      return res.redirect('/');
+    }else{
+      var user = new User(_user);
+
+      user.save(function (err, user) {
+        if (err) {
+          console.log(err);
+        }
+        res.redirect('/admin/userlist');
+      })
+    }
+  })
+  
+  //req.param('user') /:id 不管用什麼方式都可以用
+  //req.query  ?userId=id
+  //先路由在body最後query
+
+  // res.redirect('/admin/userlist');
+})
+
+//signin
+// app.post('/user/signin',function (req,res){
+//   var _user = req.body.user;
+//   var name = _user.name;
+//   var password = _user.password;
+// })
+
+
+// userlist page
+app.get('/admin/userlist',function(req,res){
+  User.fetch(function (err,users){
+    if(err){
+      console.log(err);
+    }
+    res.render('userlist',{
+      title:'imooc 用戶列表頁',
+      users:users
+    })
+  })
+})
 
 // detail page
 app.get('/movie/:id', function (req, res) {

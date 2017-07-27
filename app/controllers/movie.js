@@ -21,6 +21,7 @@ exports.detail = function (req, res) {
             Comment
                 .find({movie:id})
                 .populate('from','name') //關聯搜尋 把name返回
+                .populate('reply.from reply.to','name')
                 .exec(function (err,comments){
                 console.log(comments,'comments');
                 res.render('detail', {

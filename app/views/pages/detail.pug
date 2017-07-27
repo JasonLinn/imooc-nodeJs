@@ -22,7 +22,7 @@ block content
 											each reply in item.reply
 												.media
 													.pull-left
-														a.comment(href="#comments",data-cid=item._id,data-tid="#{reply.from._id}")
+														a.comment(href="#comments",data-cid=item._id,data-tid=reply.from._id)
 															img.media-odject(src="http://7xsktl.com1.z0.glb.clouddn.com/u=2871058462,3794837019&fm=21&gp=0.jpg",width="40",height="40")
 													.media-body
 														h4.media-heading #{reply.from.name} 
@@ -59,3 +59,4 @@ block content
 					dd=movie.year
 					dt 简介
 					dd=movie.summary
+	script(src="/js/detail.js")

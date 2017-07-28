@@ -2,6 +2,7 @@ const Index = require('../app/controllers/index');
 const User = require('../app/controllers/user');
 const Movie = require('../app/controllers/Movie');
 const comment = require('../app/controllers/comment');
+const Category = require('../app/controllers/Category');
 
 
 
@@ -38,4 +39,9 @@ module.exports = function(app){
 
     // Comment
     app.post('/admin/comment', User.signinRequired, comment.save);
+
+    //Category
+    app.get('/admin/category/new', User.signinRequired, User.adminRequired, Category.new);
+    app.post('/admin/category', User.signinRequired, User.adminRequired, Category.save);
+    app.get('/admin/category/list', User.signinRequired, User.adminRequired, Category.list);
 };

@@ -14,6 +14,11 @@
 	.container
 		.navbar-header
 			a.navbar-brand(href="/") 电影小站
+			a.navbar-brand(href="/admin/movie/new") 新增电影
+			a.navbar-brand(href="/admin/category/new") 新增分类
+			a.navbar-brand(href="/admin/user/list") 会员列表
+			a.navbar-brand(href="/admin/movie/list") 电影列表
+			a.navbar-brand(href="/admin/category/list") 分类列表
 		if user
 			p.navbar-text.navbar-right
 				span 欢迎您，#{user.name}

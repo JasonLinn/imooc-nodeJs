@@ -1,5 +1,6 @@
 
 const Movie = require('../models/movie.js');
+var Category = require('../models/category');
 const _ = require('underscore');
 const Comment = require('../models/comment');
 
@@ -38,6 +39,8 @@ exports.detail = function (req, res) {
 };
 
 
+
+
 // list page
 exports.list = (req, res) => {
 
@@ -53,63 +56,68 @@ exports.list = (req, res) => {
 };
 
 //admin update movie
-exports.update =  function (req, res) {
-    var id = req.params.id;
+exports.update = function (req, res) {
+    var id = req.params.id
+
     if (id) {
         Movie.findById(id, function (err, movie) {
-            res.render('admin', {
-                title: 'imooc 後臺更新頁',
-                movie: movie
+            Category.find({}, function (err, categories) {
+                res.render('admin', {
+                    title: '后台更新页',
+                    movie: movie,
+                    categories: categories
+                })
             })
         })
     }
-};
-
+}
 //admin post movie
 exports.save =  function (req, res) {
     // console.log("a");  经过判断是下方这个语句出了问题
     var id = req.body.movie._id;
     console.log("在post这个过程中id是:" + id); //undefined
     var movieObj = req.body.movie;
-    // console.log("movieObj is:"+movieObj);
+    console.log("movieObj is:"+movieObj);
+    console.log('id:',id);
     var _movie;
     // console.log(id==='undefined');//false
     // console.log(id=='undefined'); //false
     // console.log(id==="underfined"); //false
     // console.log(id);                  //undefined
     // console.log(typeof id);
-    if (typeof (id) !== 'undefined') {
+    if (id) {
         Movie.findById(id, function (err, movie) {
             if (err) {
-                console.log(err);
+                console.log(err)
             }
-            _movie = _.extend(movie, movieObj);
+
+            _movie = _.extend(movie, movieObj) //underscore
+            console.log(_movie);
             _movie.save(function (err, movie) {
                 if (err) {
-                    console.log(err);
+                    console.log(err)
                 }
-                res.redirect('/movie/' + movie._id);
-            });
-        });
+
+                res.redirect('/movie/' + movie._id) //重定向
+            })
+        })
     } else {
-        _movie = new Movie({
-            doctor: movieObj.doctor,
-            title: movieObj.title,
-            country: movieObj.country,
-            language: movieObj.language,
-            year: movieObj.year,
-            poster: movieObj.poster,
-            summary: movieObj.summary,
-            flash: movieObj.flash
-        });
+        _movie = new Movie(movieObj);
+        var categoryId = _movie.category;
         _movie.save(function (err, movie) {
             if (err) {
                 console.log("我是错误，我在这里");
                 console.log(err);
             }
             console.log("跳转之前电影的id是：" + movie._id);
-            res.redirect('/movie/' + movie._id);
-            console.log("这里是跳转之后");
+            Category.findById(categoryId,function (err,category){
+                category.movies.push(_movie._id);
+                category.save(function (err,category){
+                    res.redirect('/movie/'+movie._id)
+                })
+            })
+            // res.redirect('/movie/' + movie._id);
+            // console.log("这里是跳转之后");
         });
     }
 };
@@ -145,4 +153,15 @@ exports.del = function (req, res) {
             }
         })
     }
+}
+
+//admin new category
+exports.new = function (req,res){
+    Category.find({},function (err,categories){
+        res.render('admin',{
+            title:'imooc 後檯燈入夜',
+            categories:categories,
+            movie:{}
+        })
+    })
 }

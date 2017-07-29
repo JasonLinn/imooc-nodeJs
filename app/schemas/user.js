@@ -56,6 +56,7 @@ UserSchema.methods = {
     comparePassword: function (_password,cb){
         //compare 比對密碼  _password是傳入的密碼 this.password是DB的密碼
         bcrypt.compare(_password,this.password,function (err,isMatch){
+            // console.log(_password,this.password,this,'aaaaaa')
             if(err) return cb(err);
 
             cb(null,isMatch);

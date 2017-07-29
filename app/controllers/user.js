@@ -62,18 +62,20 @@ exports.signin = function (req,res){
             console.log('请先注册再登录')
             return res.redirect('/signup')
         }
-
+        console.log(`password: ${password}`)
+        console.log('user.user.js67: ',user)
+        //調用User中的comparePassword方法
         user.comparePassword(password, function (err, isMatch) {  //在schema的方法在這邊被調用，用來加密
             if (err) {
                 console.log(err)
             }
             if (isMatch) {
                 console.log('password is matched')
-                req.session.user = user
+                req.session.user = user //如果密碼匹配把user存入內存
 
                 return res.redirect('/')
             } else {
-                console.log('密码错误，请重新输入')
+                console.log('密码错误，请重新输入',isMatch)
                 return res.redirect('/signin')
 
             }

@@ -104,18 +104,36 @@ exports.save =  function (req, res) {
     } else {
         _movie = new Movie(movieObj);
         var categoryId = _movie.category;
+        var categoryName = movieObj.categoryName;
         _movie.save(function (err, movie) {
             if (err) {
                 console.log("我是错误，我在这里");
                 console.log(err);
             }
             console.log("跳转之前电影的id是：" + movie._id);
-            Category.findById(categoryId,function (err,category){
-                category.movies.push(_movie._id);
-                category.save(function (err,category){
-                    res.redirect('/movie/'+movie._id)
+            console.log(`movieObj ${movieObj}`)
+            if(categoryId){  //如果有categoryId
+                Category.findById(categoryId,function (err,category){
+                    category.movies.push(_movie._id);
+                    category.save(function (err,category){
+                        res.redirect('/movie/'+movie._id)
+                    })
                 })
-            })
+                
+            }else if(categoryName){
+                var category = new Category({
+                    name:categoryName,
+                    movies:[movie._id]
+                })
+
+                category.save(function (err,category) {
+                    movie.category = category._id;
+                    movie.save(function (err,movie) {  //除了category要存，
+                        
+                        res.redirect('/movie/' + movie._id);
+                    })
+                })
+            }
             // res.redirect('/movie/' + movie._id);
             // console.log("这里是跳转之后");
         });

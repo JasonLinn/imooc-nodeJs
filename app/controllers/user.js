@@ -54,6 +54,7 @@ exports.signin = function (req,res){
     var _user = req.body.user;  //取得post的user資料
     var name = _user.name //取得name
     var password = _user.password //取得psw
+    
     User.findOne({ name: name }, function (err, user) {  //在資料庫中找name是否存在，找到的話return 一個user
         if (err) {
             console.log(err)

@@ -4,13 +4,12 @@ extends ../layout.pug
 block content
   .container
     .row(style="margin-bottom:70px")
-      each cat in categories
         .panel.panel-primary
           .panel-heading
-            h3 #{cat.name}
+            h3 #{keyword}
           .panel-body
-            if cat.movies && cat.movies.length >0
-              each item in cat.movies
+            if category.movies && category.movies.length >0
+              each item in category.movies
                 .col-md-2
                   .thumbnail
                     a(href="/movie/"+item._id,target="_blank")

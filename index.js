@@ -8,7 +8,7 @@ var session = require('express-session');  //要先引入session給下面的mong
 var mongoStore = require('connect-mongo')(session);
 var cookieParser = require('cookie-parser');
 //HTTP request logger middleware for node.js
-var morgan = require('morgan');
+var morgan = require('morgan'); //node.js 日誌中間件
 // app.user
 
 
@@ -31,7 +31,7 @@ db.once('open', function () {
 app.locals.moment = require('moment'); // 载入moment模块，格式化日期
 app.set('views', './app/views/pages');
 app.set('view engine', 'pug');
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.urlencoded({extended: true})); //bodyParser 用來編譯模板中的變數
 // app.use(cookieParser()); //要加這個啟用session
 app.use(session({
   secret:'imooc',
@@ -43,7 +43,7 @@ app.use(session({
   saveUninitialized: true
 }))
 
-if('development' === app.get('env')){
+if('development' === app.get('env')){ //判斷目前環境
   console.log('enviroment:',app.get('env'));
   app.set('showStaticError',true);
   app.use(morgan(':method :url :status'));
@@ -51,7 +51,7 @@ if('development' === app.get('env')){
   mongoose.set('debug',true);
 }
 
-require('./config/route')(app);
+require('./config/route')(app); //引用config的route
 // var serveStatic = require('serve-static');  // 静态文件处理
 // app.use(serveStatic('bower_components')); // 路径：public
 // app.use(static(path.join(__dirname, 'bower_components/')))
